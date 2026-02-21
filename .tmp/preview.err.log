@@ -1,0 +1,99 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\lodewijk.heemskerk\\Documents\\Persoonlijk\\BluePrint']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [27388] using WatchFiles
+INFO:     Started server process [31112]
+INFO:     Waiting for application startup.
+2026-02-18 21:22:38,353 [INFO] blueprint: BluePrint starting up...
+2026-02-18 21:22:38,369 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-02-18 21:22:38,369 [INFO] apscheduler.scheduler: Added job "Scan every 240 minutes" to job store "default"
+2026-02-18 21:22:38,369 [INFO] apscheduler.scheduler: Scheduler started
+2026-02-18 21:22:38,369 [INFO] backend.services.scheduler: Scheduler started — scanning every 240 minutes
+2026-02-18 21:22:38,369 [INFO] blueprint: Server running on http://127.0.0.1:8000
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend\scanner\backtester.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-02-18 21:32:29,343 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-02-18 21:32:29,351 [INFO] backend.services.scheduler: Scheduler stopped
+2026-02-18 21:32:29,352 [INFO] blueprint: BluePrint shutting down.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [31112]
+WARNING:  WatchFiles detected changes in 'backend\scanner\backtester.py', 'backend\scanner\engine.py', 'backend\routers\strategies.py'. Reloading...
+INFO:     Started server process [21900]
+INFO:     Waiting for application startup.
+2026-02-18 21:32:32,357 [INFO] blueprint: BluePrint starting up...
+2026-02-18 21:32:32,368 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-02-18 21:32:32,368 [INFO] apscheduler.scheduler: Added job "Scan every 240 minutes" to job store "default"
+2026-02-18 21:32:32,368 [INFO] apscheduler.scheduler: Scheduler started
+2026-02-18 21:32:32,368 [INFO] backend.services.scheduler: Scheduler started — scanning every 240 minutes
+2026-02-18 21:32:32,368 [INFO] blueprint: Server running on http://127.0.0.1:8000
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\lodewijk.heemskerk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Users\lodewijk.heemskerk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [9464]
+INFO:     Waiting for application startup.
+2026-02-18 21:32:34,891 [INFO] blueprint: BluePrint starting up...
+2026-02-18 21:32:34,891 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-02-18 21:32:34,899 [INFO] apscheduler.scheduler: Added job "Scan every 240 minutes" to job store "default"
+2026-02-18 21:32:34,900 [INFO] apscheduler.scheduler: Scheduler started
+2026-02-18 21:32:34,900 [INFO] backend.services.scheduler: Scheduler started — scanning every 240 minutes
+2026-02-18 21:32:34,900 [INFO] blueprint: Server running on http://127.0.0.1:8000
+INFO:     Application startup complete.
+2026-02-18 21:34:19,140 [INFO] backend.scanner.engine: Starting scan (lock acquired)
+2026-02-18 21:34:33,529 [INFO] backend.scanner.engine: Updated dynamic universe: 100 coins
+2026-02-18 21:34:33,905 [INFO] backend.scanner.engine: Market regime: trending_down
+2026-02-18 21:34:33,924 [INFO] backend.scanner.engine: Scanning 100 assets with 1 strategies
+2026-02-18 21:34:51,706 [INFO] backend.scanner.engine: New setup: USD1/USDT / Bollinger Squeeze Breakout (long)
+2026-02-18 21:35:15,586 [INFO] backend.scanner.engine: New setup: PAXG/USDT / Bollinger Squeeze Breakout (long)
+2026-02-18 21:36:18,696 [INFO] backend.scanner.engine: New setup: SENT/USDT / Bollinger Squeeze Breakout (long)
+2026-02-18 21:36:38,438 [INFO] backend.scanner.engine: Scan complete: 100 assets, 3 new setups, 15 expired, 0 invalidated
+2026-02-18 21:36:38,468 [INFO] backend.scanner.engine: Scan completed (lock released)
+INFO:     ('127.0.0.1', 50532) - "WebSocket /ws/logs" [accepted]
+INFO:     connection open
+WARNING:  WatchFiles detected changes in 'backend\services\telegram.py', 'run.py', 'backend\main.py', 'backend\__init__.py', 'backend\routers\backtester_router.py', 'backend\scanner\levels.py', 'backend\services\scheduler.py', 'backend\services\log_streamer.py', 'backend\config.py', 'backend\routers\scans.py', 'backend\routers\__init__.py', 'backend\routers\strategies.py', 'backend\scanner\__init__.py', 'backend\routers\webhooks.py', 'backend\schemas.py', 'backend\models.py', 'backend\routers\journal.py', 'backend\routers\dashboard.py', 'backend\routers\chart_data.py', 'backend\services\__init__.py', 'backend\scanner\indicators.py', 'backend\database.py', 'backend\routers\assets.py', 'backend\scanner\data_fetcher.py', 'backend\scanner\engine.py', 'backend\scanner\conditions.py', 'backend\scanner\backtester.py', 'backend\scanner\regime.py', 'backend\routers\setups.py'. Reloading...
+INFO:     Shutting down
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+2026-02-19 08:59:38,670 [INFO] apscheduler.scheduler: Scheduler has been shut down
+2026-02-19 08:59:38,682 [INFO] backend.services.scheduler: Scheduler stopped
+2026-02-19 08:59:38,686 [INFO] blueprint: BluePrint shutting down.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9464]
+INFO:     Started server process [27892]
+INFO:     Waiting for application startup.
+2026-02-19 08:59:56,318 [INFO] blueprint: BluePrint starting up...
+2026-02-19 08:59:56,332 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-02-19 08:59:56,333 [INFO] apscheduler.scheduler: Added job "Scan every 240 minutes" to job store "default"
+2026-02-19 08:59:56,334 [INFO] apscheduler.scheduler: Scheduler started
+2026-02-19 08:59:56,335 [INFO] backend.services.scheduler: Scheduler started — scanning every 240 minutes
+2026-02-19 08:59:56,336 [INFO] blueprint: Server running on http://127.0.0.1:8000
+INFO:     Application startup complete.

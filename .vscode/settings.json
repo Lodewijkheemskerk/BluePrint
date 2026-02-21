@@ -1,0 +1,14 @@
+{
+  "terminal.integrated.defaultProfile.windows": "WSL",
+  "terminal.integrated.profiles.windows": {
+    "WSL": {
+      "path": "wsl.exe",
+      "args": []
+    },
+    "PowerShell": {
+      "path": "powershell.exe"
+    }
+  },
+  "remote.WSL.fileWatcher.polling": true,
+  "python.defaultInterpreterPath": "wsl python3"
+}

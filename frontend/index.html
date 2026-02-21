@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BluePrint — Crypto Swing Trading Scanner</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+<div class="app">
+    <!-- ─── Top Navigation ─── -->
+    <nav class="top-nav">
+        <a href="#" class="logo" onclick="window.app.navigate('setups');return false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2962FF" stroke-width="2.5"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
+            BluePrint
+        </a>
+        <div class="nav-links">
+            <a data-view="setups" class="active">Setups</a>
+            <a data-view="strategies">Strategies</a>
+            <a data-view="universe">Universe</a>
+            <a data-view="regime">Regime</a>
+            <a data-view="scans">Scans</a>
+            <a data-view="journal">Journal</a>
+            <a data-view="backtester">Backtester</a>
+            <a data-view="logs">Logs</a>
+        </div>
+        <div class="nav-right">
+            <span id="stat-regime"></span>
+        </div>
+    </nav>
+
+    <!-- ─── Main Content ─── -->
+    <div class="main-content">
+
+        <!-- ===== SETUPS VIEW ===== -->
+        <div id="view-setups" class="view active">
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-label">Active Setups</div><div class="stat-value" id="stat-active-setups">0</div></div>
+                <div class="stat-card"><div class="stat-label">Strategies</div><div class="stat-value" id="stat-active-strategies">0</div></div>
+                <div class="stat-card"><div class="stat-label">Universe Size</div><div class="stat-value" id="stat-universe-size">0</div></div>
+                <div class="stat-card"><div class="stat-label">Setups Today</div><div class="stat-value" id="stat-setups-today">0</div></div>
+                <div class="stat-card"><div class="stat-label">Last Scan</div><div class="stat-value" id="stat-last-scan" style="font-size:16px">—</div></div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Active Setups</h2>
+                <div class="filter-pills">
+                    <button class="pill active" onclick="this.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));this.classList.add('active')">All</button>
+                    <button class="pill" onclick="this.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));this.classList.add('active')">Long</button>
+                    <button class="pill" onclick="this.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));this.classList.add('active')">Short</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th><th>Strategy</th><th>Direction</th><th>Status</th>
+                            <th>Entry</th><th>Stop Loss</th><th>TP1/TP2/TP3</th><th>R:R</th>
+                            <th>Funding</th><th>Detected</th>
+                        </tr>
+                    </thead>
+                    <tbody id="setups-tbody">
+                        <tr><td colspan="10"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== STRATEGIES VIEW ===== -->
+        <div id="view-strategies" class="view">
+            <div class="section-header">
+                <h2 class="section-title">Strategy Manager</h2>
+                <button class="btn btn-primary" onclick="window.app.openModal('new-strategy-modal')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New Strategy
+                </button>
+            </div>
+            <div id="strategies-list" style="display:grid;gap:12px">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <!-- ===== UNIVERSE VIEW ===== -->
+        <div id="view-universe" class="view">
+            <div class="section-header">
+                <h2 class="section-title">Asset Universe</h2>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <input type="text" id="new-asset-symbol" class="form-input" placeholder="BTC/USDT" style="width:160px">
+                    <button class="btn btn-primary btn-sm" onclick="window.app.addAsset()">Add to Watchlist</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Symbol</th><th>Base</th><th>Source</th><th>Rank</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="universe-tbody"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== REGIME VIEW ===== -->
+        <div id="view-regime" class="view">
+            <div class="section-header"><h2 class="section-title">Market Regime</h2></div>
+            <div id="regime-content"><div class="spinner"></div></div>
+        </div>
+
+        <!-- ===== SCANS VIEW ===== -->
+        <div id="view-scans" class="view">
+            <div class="section-header">
+                <h2 class="section-title">Scan History</h2>
+                <button data-scan-btn class="btn btn-primary btn-sm" onclick="window.app.triggerScan()">Trigger Scan</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID</th><th>Started</th><th>Finished</th><th>Assets</th><th>Setups Found</th><th>Regime</th><th>Status</th></tr></thead>
+                    <tbody id="scans-tbody"><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== JOURNAL VIEW ===== -->
+        <div id="view-journal" class="view">
+            <div class="stats-row" style="margin-bottom:16px">
+                <div class="stat-card"><div class="stat-label">Total Trades (30d)</div><div class="stat-value" id="journal-total">0</div></div>
+                <div class="stat-card"><div class="stat-label">Win Rate</div><div class="stat-value" id="journal-winrate">—</div></div>
+                <div class="stat-card"><div class="stat-label">Avg R</div><div class="stat-value" id="journal-avgr">—</div></div>
+                <div class="stat-card"><div class="stat-label">Total P&L</div><div class="stat-value" id="journal-pnl">—</div></div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Trade Journal</h2>
+                <button class="btn btn-primary btn-sm" onclick="window.app.openJournalModal()">Log Trade</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Date</th><th>Asset</th><th>Strategy</th><th>Direction</th><th>Action</th><th>Outcome</th><th>R:R</th><th>P&L (R)</th><th>Tags</th></tr></thead>
+                    <tbody id="journal-tbody"><tr><td colspan="9"><div class="spinner"></div></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== BACKTESTER VIEW ===== -->
+        <div id="view-backtester" class="view">
+            <div class="section-header"><h2 class="section-title">Strategy Backtester</h2></div>
+            <div class="card" style="margin-bottom:16px">
+                <div class="grid-3" style="margin-bottom:12px">
+                    <div class="form-group">
+                        <label class="form-label">Strategy</label>
+                        <select id="bt-strategy" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Timeframe</label>
+                        <select id="bt-timeframe" class="form-select">
+                            <option value="1d">Daily</option>
+                            <option value="4h">4H</option>
+                            <option value="1h">1H</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Symbols (comma-separated, blank=universe)</label>
+                        <input id="bt-symbols" class="form-input" placeholder="BTC/USDT, ETH/USDT">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="window.app.runBacktest()">Run Backtest</button>
+            </div>
+            <div id="bt-results"></div>
+        </div>
+
+        <!-- ===== LOGS VIEW ===== -->
+        <div id="view-logs" class="view">
+            <div class="section-header">
+                <h2 class="section-title">Live Logs</h2>
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span id="log-status" class="log-status disconnected">
+                        <span class="log-status-dot"></span>
+                        <span id="log-status-text">Disconnected</span>
+                    </span>
+                    <span id="log-line-count" class="log-line-count">0 lines</span>
+                    <input type="text" id="log-search" class="form-input" placeholder="Filter logs…" style="width:200px">
+                    <div class="filter-pills" style="margin-bottom:0;gap:4px">
+                        <button class="pill log-level-pill active" data-level="all" onclick="window.app.filterLogLevel('all',this)">All</button>
+                        <button class="pill log-level-pill" data-level="DEBUG" onclick="window.app.filterLogLevel('DEBUG',this)">Debug</button>
+                        <button class="pill log-level-pill" data-level="INFO" onclick="window.app.filterLogLevel('INFO',this)">Info</button>
+                        <button class="pill log-level-pill" data-level="WARNING" onclick="window.app.filterLogLevel('WARNING',this)">Warn</button>
+                        <button class="pill log-level-pill" data-level="ERROR" onclick="window.app.filterLogLevel('ERROR',this)">Error</button>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="log-pause-btn" onclick="window.app.toggleLogPause()">
+                        <svg id="log-pause-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        <span id="log-pause-label">Pause</span>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.app.clearLogs()">Clear</button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.app.downloadLogs()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+            <div id="log-terminal" class="log-terminal">
+                <div id="log-output" class="log-output"></div>
+            </div>
+        </div>
+
+    </div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- ─── MODALS ─── -->
+
+<!-- Setup Detail Modal -->
+<div id="setup-detail-modal" class="modal-overlay" onclick="if(event.target===this)window.app.closeModal('setup-detail-modal')">
+    <div class="modal" style="max-width:700px">
+        <div id="setup-detail-content"></div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="window.app.closeModal('setup-detail-modal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- New Strategy Modal -->
+<div id="new-strategy-modal" class="modal-overlay" onclick="if(event.target===this)window.app.closeModal('new-strategy-modal')">
+    <div class="modal" style="max-width:640px">
+        <div class="modal-title">Create New Strategy</div>
+        <div class="form-group">
+            <label class="form-label">Name</label>
+            <input id="new-strat-name" class="form-input" placeholder="e.g. Trend Pullback Long">
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Direction</label>
+                <select id="new-strat-direction" class="form-select">
+                    <option value="long">Long</option>
+                    <option value="short">Short</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <input id="new-strat-description" class="form-input" placeholder="Optional description">
+            </div>
+        </div>
+        <div style="margin:16px 0 8px"><strong style="font-size:13px">Conditions</strong>
+            <span style="font-size:11px;color:var(--text-secondary);margin-left:8px">(All required conditions must pass)</span>
+        </div>
+        <div id="conditions-container"></div>
+        <button class="btn btn-secondary btn-sm" onclick="window.app.addConditionRow()" style="margin-top:4px">+ Add Condition</button>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="window.app.closeModal('new-strategy-modal')">Cancel</button>
+            <button class="btn btn-primary" onclick="window.app.createStrategy()">Create Strategy</button>
+        </div>
+    </div>
+</div>
+
+<!-- New Journal Entry Modal -->
+<div id="new-journal-modal" class="modal-overlay" onclick="if(event.target===this)window.app.closeModal('new-journal-modal')">
+    <div class="modal">
+        <div class="modal-title">Log Trade</div>
+        <input type="hidden" id="journal-setup-id" value="">
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Symbol</label>
+                <input id="journal-symbol" class="form-input" placeholder="BTC/USDT">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Strategy</label>
+                <input id="journal-strategy" class="form-input" placeholder="Strategy name">
+            </div>
+        </div>
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">Direction</label>
+                <select id="journal-direction" class="form-select">
+                    <option value="">—</option>
+                    <option value="long">Long</option>
+                    <option value="short">Short</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Action</label>
+                <select id="journal-action" class="form-select">
+                    <option value="took_trade">Took Trade</option>
+                    <option value="skipped">Skipped</option>
+                    <option value="partial">Partial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Outcome</label>
+                <select id="journal-outcome" class="form-select">
+                    <option value="open">Open</option>
+                    <option value="win">Win</option>
+                    <option value="loss">Loss</option>
+                    <option value="breakeven">Breakeven</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">Entry Price</label>
+                <input id="journal-entry-price" class="form-input" type="number" step="any">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Stop Price</label>
+                <input id="journal-stop-price" class="form-input" type="number" step="any">
+            </div>
+            <div class="form-group">
+                <label class="form-label">TP1</label>
+                <input id="journal-tp1-price" class="form-input" type="number" step="any">
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">TP2</label>
+                <input id="journal-tp2-price" class="form-input" type="number" step="any">
+            </div>
+            <div class="form-group">
+                <label class="form-label">TP3</label>
+                <input id="journal-tp3-price" class="form-input" type="number" step="any">
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">P&L (R-multiple)</label>
+                <input id="journal-r-multiple" class="form-input" type="number" step="any">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Planned R:R</label>
+                <input id="journal-planned-rr" class="form-input" type="number" step="any" placeholder="e.g. 2 means 1:2">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tags (comma-separated)</label>
+            <input id="journal-tags" class="form-input" placeholder="followed plan, FOMO">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea id="journal-notes" class="form-textarea" placeholder="What did you observe? Why did you take/skip this trade?"></textarea>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="window.app.closeModal('new-journal-modal')">Cancel</button>
+            <button class="btn btn-primary" onclick="window.app.saveJournalEntry()">Save Entry</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
+
